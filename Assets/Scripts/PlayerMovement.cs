@@ -47,9 +47,9 @@ public class PlayerMovement : MonoBehaviour
         SwerveControl();
         
 
-        if (fly)
+        if (fly && !finish)
         {
-            //rb.AddForce(new Vector3(0, GetComponent<BalloonDestroyer>().seviye, 0));
+            rb.AddForce(new Vector3(0, GetComponent<BalloonDestroyer>().seviye / 2, 0));
             ActivateRagdoll();
         }
         if (start && !finish)
@@ -91,27 +91,13 @@ public class PlayerMovement : MonoBehaviour
 
         if (m_deltaPos.x > 0)
         {
-            transform.DOLocalRotate(new Vector3(0, 45, 0), 0.2f);
+            transform.DOLocalRotate(new Vector3(0, 20, 0), 0.2f);
         }
         else if (m_deltaPos.x < 0)
         {
-            transform.DOLocalRotate(new Vector3(0, -45, 0), 0.2f);
+            transform.DOLocalRotate(new Vector3(0, -20, 0), 0.2f);
         }
 
-    }
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.tag == "finish")
-        {
-           // Ragdoll Sistemi burayý görmüyor
-
-
-            //rb.isKinematic = true;
-            //rb.constraints = RigidbodyConstraints.FreezeAll;
-            //anim.SetBool("Fly", false);
-            //anim.SetBool("Bump", true);
-            finish = true;
-        }
     }
     private void OnTriggerEnter(Collider collision)
     {
@@ -130,6 +116,25 @@ public class PlayerMovement : MonoBehaviour
         {
             kat++;
         }
+        if (collision.gameObject.tag == "finish")
+        {
+            // Ragdoll Sistemi burayý görmüyor
+            Debug.Log("finish");
+
+            rb.isKinematic = true;
+            rb.constraints = RigidbodyConstraints.FreezeAll;
+
+            for (var i = ragDollCol.Length - 1; i > 1; i--)
+            {
+                ragDollCol[i].enabled = true;
+                //ragdollRb[i].isKinematic = true;
+                //playerCol.isTrigger = false;
+                ragdollRb[i].velocity = Vector3.zero;
+                ragDollCol[i].transform.parent = collision.gameObject.transform;
+                //ragdollRb[i].useGravity = true;
+            }
+            finish = true;
+        }
     }
 
     public void DisableRagdoll()
@@ -145,15 +150,21 @@ public class PlayerMovement : MonoBehaviour
 
     public void ActivateRagdoll()
     {
-        cmCam.gameObject.SetActive(false);
-        for (var i = ragDollCol.Length - 1; i > 0; i--)
+        //cmCam.gameObject.SetActive(false);
+        Debug.Log("Ragdoll");
+        for (var i = ragDollCol.Length - 1; i > 1; i--)
         {
             ragDollCol[i].enabled = true;
             ragdollRb[i].isKinematic = false;
             ragdollRb[i].mass = 1;
-            ragdollRb[i].AddForce(new Vector3(0, GetComponent<BalloonDestroyer>().seviye, 0));
-            playerCol.enabled = false;
+            ragdollRb[i].useGravity = false;
+            ragdollRb[i].AddForce(new Vector3(0, GetComponent<BalloonDestroyer>().seviye / 2, 0));
+            playerCol.isTrigger = true;
             anim.enabled = false;
+        }
+        if (finish)
+        {
+            enabled = false;
         }
     }
 }

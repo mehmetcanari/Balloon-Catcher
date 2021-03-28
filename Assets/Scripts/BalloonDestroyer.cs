@@ -5,7 +5,6 @@ using DG.Tweening;
 public class BalloonDestroyer : MonoBehaviour
 {
     public PlayerMovement pb;
-    private Vector3 mainbaloonNewPos;
     public BaloonTypes baloonTypes;
     public float balonscale;
     public float balonscalePlus;
