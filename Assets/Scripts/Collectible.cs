@@ -5,8 +5,7 @@ using UnityEngine;
 public class Collectible : MonoBehaviour
 {
     private float rotSpeed = 1;
-    //public ParticleSystem diamondParticle;
-    
+    public ParticleSystem collectible;
 
     void Update()
     {
@@ -18,7 +17,7 @@ public class Collectible : MonoBehaviour
         if (other.gameObject.tag == "baloncu")
         {
             Destroy(transform.gameObject);
-            //Instantiate(diamondParticle, gameObject.transform.position, Quaternion.identity);
+            Instantiate(collectible, transform.position, Quaternion.identity);
         }
     }
 }

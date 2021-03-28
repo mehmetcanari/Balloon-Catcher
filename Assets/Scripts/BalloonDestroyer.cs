@@ -5,17 +5,19 @@ using DG.Tweening;
 public class BalloonDestroyer : MonoBehaviour
 {
     public PlayerMovement pb;
+    private Vector3 mainbaloonNewPos;
     public BaloonTypes baloonTypes;
     public float balonscale;
+    public float balonscalePlus;
     public int seviye;
     bool blue = false;
     bool purple = true;
     bool green = false;
+    private bool stopCountNegative = false;
     public GameObject mainballoon;
     public Material redMat;
     public Material greenMat;
     public Material purpleMat;
-
 
     public enum BaloonTypes
     {
@@ -51,11 +53,13 @@ public class BalloonDestroyer : MonoBehaviour
             blue = true;
             green = false;
             purple = false;
+            stopCountNegative = false;
             mainballoon.GetComponent<MeshRenderer>().material = redMat;
         }
 
         else if (collision.gameObject.tag == "greenTrigger")
         {
+            stopCountNegative = false;
             baloonTypes = BaloonTypes.green;
             green = true;
             blue = false;
@@ -65,6 +69,7 @@ public class BalloonDestroyer : MonoBehaviour
 
         else if (collision.gameObject.tag == "purpleTrigger")
         {
+            stopCountNegative = false;
             baloonTypes = BaloonTypes.purple;
             green = false;
             blue = false;
@@ -74,14 +79,15 @@ public class BalloonDestroyer : MonoBehaviour
         #endregion
 
         #region Green Index
-        if (green)
+        if (green) 
         {
             if (collision.gameObject.tag == "green")
             {             
                 if (mainballoon.gameObject.activeSelf)
                 {
                     seviye++;
-                    mainballoon.transform.DOScale(new Vector3(mainballoon.transform.localScale.x + balonscale, mainballoon.transform.localScale.y + balonscale, mainballoon.transform.localScale.z + balonscale), 0.1f);
+                    mainballoon.transform.DOScale(new Vector3(mainballoon.transform.localScale.x + (balonscale + balonscalePlus), mainballoon.transform.localScale.y + (balonscale + balonscalePlus), mainballoon.transform.localScale.z + (balonscale + balonscalePlus)), 0.1f);
+                    mainballoon.transform.position += new Vector3(0, 0.05f, 0); // Balonlar toplandığında hem büyür hemde Y değeri artar
                 }
                 mainballoon.SetActive(true);
                 Destroy(collision.gameObject);
@@ -91,9 +97,19 @@ public class BalloonDestroyer : MonoBehaviour
             {
                 if (mainballoon.gameObject.activeSelf)
                 {
-
                     seviye--;
-                    mainballoon.transform.DOScale(new Vector3(mainballoon.transform.localScale.x - balonscale, mainballoon.transform.localScale.y - balonscale, mainballoon.transform.localScale.z - balonscale), 0.1f);
+
+                    if (mainballoon.transform.localScale == Vector3.zero)
+                    {
+                        Debug.Log("0 oldu");
+                        stopCountNegative = true;
+                    }
+
+                    if (!stopCountNegative)
+                    {
+                        mainballoon.transform.DOScale(new Vector3(mainballoon.transform.localScale.x - balonscale, mainballoon.transform.localScale.y - balonscale, mainballoon.transform.localScale.z - balonscale), 0.1f);
+                        mainballoon.transform.position -= new Vector3(0, 0.05f, 0); //Farklı balonu toplarsa hem küçülür hemde Y değeri azalır.
+                    }
                 }
 
                 Destroy(collision.gameObject);
@@ -104,7 +120,18 @@ public class BalloonDestroyer : MonoBehaviour
                 if (mainballoon.gameObject.activeSelf)
                 {
                     seviye--;
-                    mainballoon.transform.DOScale(new Vector3(mainballoon.transform.localScale.x - balonscale, mainballoon.transform.localScale.y - balonscale, mainballoon.transform.localScale.z - balonscale), 0.1f);
+                    
+                    if (mainballoon.transform.localScale == Vector3.zero)
+                    {
+                        Debug.Log("0 oldu");
+                        stopCountNegative = true;
+                    }
+
+                    if (!stopCountNegative)
+                    {
+                        mainballoon.transform.DOScale(new Vector3(mainballoon.transform.localScale.x - balonscale, mainballoon.transform.localScale.y - balonscale, mainballoon.transform.localScale.z - balonscale), 0.1f);
+                        mainballoon.transform.position -= new Vector3(0, 0.05f, 0);
+                    }
                 }
                 Destroy(collision.gameObject);
             }
@@ -119,7 +146,16 @@ public class BalloonDestroyer : MonoBehaviour
                 if (mainballoon.gameObject.activeSelf)
                 {
                     seviye--;
-                    mainballoon.transform.DOScale(new Vector3(mainballoon.transform.localScale.x - balonscale, mainballoon.transform.localScale.y - balonscale, mainballoon.transform.localScale.z - balonscale), 0.1f);
+                    if (mainballoon.transform.localScale == Vector3.zero)
+                    {
+                        Debug.Log("0 oldu");
+                        stopCountNegative = true;
+                    }
+                    if (!stopCountNegative)
+                    {
+                        mainballoon.transform.DOScale(new Vector3(mainballoon.transform.localScale.x - balonscale, mainballoon.transform.localScale.y - balonscale, mainballoon.transform.localScale.z - balonscale), 0.1f);
+                        mainballoon.transform.position -= new Vector3(0, 0.05f, 0);
+                    }
                 }
                 Destroy(collision.gameObject);
             }
@@ -129,7 +165,18 @@ public class BalloonDestroyer : MonoBehaviour
                 if (mainballoon.gameObject.activeSelf)
                 {
                     seviye--;
-                    mainballoon.transform.DOScale(new Vector3(mainballoon.transform.localScale.x - balonscale, mainballoon.transform.localScale.y - balonscale, mainballoon.transform.localScale.z - balonscale), 0.1f);
+
+                    if (mainballoon.transform.localScale == Vector3.zero)
+                    {
+                        Debug.Log("0 oldu");
+                        stopCountNegative = true;
+                    }
+
+                    if (!stopCountNegative)
+                    {
+                        mainballoon.transform.DOScale(new Vector3(mainballoon.transform.localScale.x - balonscale, mainballoon.transform.localScale.y - balonscale, mainballoon.transform.localScale.z - balonscale), 0.1f);
+                        mainballoon.transform.position -= new Vector3(0, 0.05f, 0);
+                    }
                 }
                 Destroy(collision.gameObject);
             }
@@ -139,7 +186,8 @@ public class BalloonDestroyer : MonoBehaviour
                 if (mainballoon.gameObject.activeSelf)
                 {
                     seviye++;
-                    mainballoon.transform.DOScale(new Vector3(mainballoon.transform.localScale.x + balonscale, mainballoon.transform.localScale.y + balonscale, mainballoon.transform.localScale.z + balonscale), 0.1f);
+                    mainballoon.transform.DOScale(new Vector3(mainballoon.transform.localScale.x + (balonscale + balonscalePlus), mainballoon.transform.localScale.y + (balonscale + balonscalePlus), mainballoon.transform.localScale.z + (balonscale + balonscalePlus)), 0.1f);
+                    mainballoon.transform.position += new Vector3(0, 0.05f, 0);
                 }
                 Destroy(collision.gameObject);
                 mainballoon.SetActive(true);
@@ -155,9 +203,19 @@ public class BalloonDestroyer : MonoBehaviour
             {
                 if (mainballoon.gameObject.activeSelf)
                 {
-
                     seviye--;
-                    mainballoon.transform.DOScale(new Vector3(mainballoon.transform.localScale.x - balonscale, mainballoon.transform.localScale.y - balonscale, mainballoon.transform.localScale.z - balonscale), 0.1f);
+
+                    if (mainballoon.transform.localScale == Vector3.zero)
+                    {
+                        Debug.Log("0 oldu");
+                        stopCountNegative = true;
+                    }
+                    
+                    if (!stopCountNegative)
+                    {
+                        mainballoon.transform.DOScale(new Vector3(mainballoon.transform.localScale.x - balonscale, mainballoon.transform.localScale.y - balonscale, mainballoon.transform.localScale.z - balonscale), 0.1f);
+                        mainballoon.transform.position -= new Vector3(0, 0.05f, 0);
+                    }
                 }
                 Destroy(collision.gameObject);
             }
@@ -167,7 +225,8 @@ public class BalloonDestroyer : MonoBehaviour
                 if (mainballoon.gameObject.activeSelf)
                 {
                     seviye++;
-                    mainballoon.transform.DOScale(new Vector3(mainballoon.transform.localScale.x + balonscale, mainballoon.transform.localScale.y + balonscale, mainballoon.transform.localScale.z + balonscale), 0.1f);
+                    mainballoon.transform.DOScale(new Vector3(mainballoon.transform.localScale.x + (balonscale + balonscalePlus), mainballoon.transform.localScale.y + (balonscale + balonscalePlus), mainballoon.transform.localScale.z + (balonscale + balonscalePlus)), 0.1f);
+                    mainballoon.transform.position += new Vector3(0, 0.05f, 0);
                 }
                 Destroy(collision.gameObject);
             }
@@ -176,16 +235,27 @@ public class BalloonDestroyer : MonoBehaviour
             {
                 if (mainballoon.gameObject.activeSelf)
                 {
-
                     seviye--;
-                    mainballoon.transform.DOScale(new Vector3(mainballoon.transform.localScale.x - balonscale, mainballoon.transform.localScale.y - balonscale, mainballoon.transform.localScale.z - balonscale), 0.1f);
+
+                    if (mainballoon.transform.localScale == Vector3.zero)
+                    {
+                        Debug.Log("0 oldu");
+                        stopCountNegative = true;
+                    }
+
+                    if (!stopCountNegative)
+                    {
+                        mainballoon.transform.DOScale(new Vector3(mainballoon.transform.localScale.x - balonscale, mainballoon.transform.localScale.y - balonscale, mainballoon.transform.localScale.z - balonscale), 0.1f);
+                        mainballoon.transform.position -= new Vector3(0, 0.05f, 0);
+                    }
                 }
                 Destroy(collision.gameObject);
             }
 
-            else if (collision.gameObject.tag == "trap" && baloonTypes == BaloonTypes.purple)
+            else if (collision.gameObject.tag == "trap")
             {
-                pb.currentState = PlayerMovement.State.Lose;
+                pb.mainballoon.transform.DOScale(Vector3.zero, 0.1f);
+                Instantiate(pb.balloonPop, pb.mainballoon.transform.position, Quaternion.identity);
             }
         }
         #endregion

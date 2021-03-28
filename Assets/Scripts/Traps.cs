@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class Traps : MonoBehaviour
 {
     public PlayerMovement pb;
+    public BalloonDestroyer bd;
     Vector3 boyut;
     private int pop;
 
@@ -19,11 +21,6 @@ public class Traps : MonoBehaviour
             gameObject.SetActive(false);
             pop = 0;
         }
-
-        if (transform.localScale == new Vector3(70,70,70))
-        {
-            pb.currentState = PlayerMovement.State.Lose;
-        }
     }
 
     #region Triggers
@@ -31,13 +28,13 @@ public class Traps : MonoBehaviour
     {
         if (collision.gameObject.tag == "trap")
         {
-            gameObject.SetActive(false);
-            transform.localScale = boyut;
+            gameObject.transform.DOScale(Vector3.zero, 0.1f);
+            Instantiate(pb.balloonPop, pb.mainballoon.transform.position, Quaternion.identity);
 
             if (pop == 0)
             {
                 Debug.Log("Balon patladı");
-                pb.currentState = PlayerMovement.State.Lose;
+                bd.seviye = 0; // patladığında seviye sıfırlanır
             }
         }
         if (collision.gameObject.tag == "trapdetect")
