@@ -2409,7 +2409,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 482253524}
-  m_LocalRotation: {x: 0.3006394, y: -0.000000016410377, z: 0.000000005172915, w: 0.9537379}
+  m_LocalRotation: {x: 0.3006394, y: 0.000000016410377, z: -0.000000005172915, w: 0.9537379}
   m_LocalPosition: {x: -10.535559, y: 18.885046, z: -42.876648}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -5719,7 +5719,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.3006394, y: -0.000000016410377, z: 0.000000005172915, w: 0.9537379}
+  m_LocalRotation: {x: 0.3006394, y: 0.000000016410377, z: -0.000000005172915, w: 0.9537379}
   m_LocalPosition: {x: 0.05, y: 2.4640002, z: -45.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -7821,6 +7821,7 @@ MonoBehaviour:
   playerCol: {fileID: 1223573667}
   ragdollCheck: 0
   cmCam: {fileID: 482253526}
+  bd: {fileID: 1223573670}
 --- !u!4 &1232968947 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 271880171984548856, guid: 3a8bfcc1fd7666c479e4f05610cac921,
@@ -10717,17 +10718,17 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 8d38a47512c2cf349a30221a07196977,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 40
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8d38a47512c2cf349a30221a07196977,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 40
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8d38a47512c2cf349a30221a07196977,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 40
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8d38a47512c2cf349a30221a07196977,
         type: 3}

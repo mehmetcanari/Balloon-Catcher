@@ -26,6 +26,7 @@ public class PlayerMovement : MonoBehaviour
     public Collider playerCol;
     public bool ragdollCheck = false;
     public CinemachineVirtualCamera cmCam;
+    public BalloonDestroyer bd;
 
     Rigidbody rb;
     bool fly;
@@ -49,7 +50,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (fly && !finish)
         {
-            rb.AddForce(new Vector3(0, GetComponent<BalloonDestroyer>().seviye / 2, 0));
+            rb.AddForce(new Vector3(0, GetComponent<BalloonDestroyer>().seviye, 0));
             ActivateRagdoll();
         }
         if (start && !finish)
@@ -116,6 +117,13 @@ public class PlayerMovement : MonoBehaviour
         {
             kat++;
         }
+
+        if (collision.gameObject.tag == "trap")
+        {
+            bd.seviye = 0;
+            bd.mainballoon.gameObject.transform.DOScale(Vector3.zero, 0f);
+            Instantiate(balloonPop, bd.mainballoon.transform.position, Quaternion.identity);
+        }
         if (collision.gameObject.tag == "finish")
         {
             // Ragdoll Sistemi burayý görmüyor
@@ -131,6 +139,7 @@ public class PlayerMovement : MonoBehaviour
                 //playerCol.isTrigger = false;
                 ragdollRb[i].velocity = Vector3.zero;
                 ragDollCol[i].transform.parent = collision.gameObject.transform;
+                ragdollRb[i].constraints = RigidbodyConstraints.FreezeAll;
                 //ragdollRb[i].useGravity = true;
             }
             finish = true;
@@ -158,7 +167,7 @@ public class PlayerMovement : MonoBehaviour
             ragdollRb[i].isKinematic = false;
             ragdollRb[i].mass = 1;
             ragdollRb[i].useGravity = false;
-            ragdollRb[i].AddForce(new Vector3(0, GetComponent<BalloonDestroyer>().seviye / 2, 0));
+            ragdollRb[i].AddForce(new Vector3(0, GetComponent<BalloonDestroyer>().seviye, 0));
             playerCol.isTrigger = true;
             anim.enabled = false;
         }

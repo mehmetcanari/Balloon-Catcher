@@ -28,13 +28,12 @@ public class Traps : MonoBehaviour
     {
         if (collision.gameObject.tag == "trap")
         {
-            gameObject.transform.DOScale(Vector3.zero, 0.1f);
+            gameObject.SetActive(false);
             Instantiate(pb.balloonPop, pb.mainballoon.transform.position, Quaternion.identity);
-
+            
             if (pop == 0)
             {
                 Debug.Log("Balon patladı");
-                bd.seviye = 0; // patladığında seviye sıfırlanır
             }
         }
         if (collision.gameObject.tag == "trapdetect")
