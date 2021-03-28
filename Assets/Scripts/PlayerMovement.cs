@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using Cinemachine;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -20,6 +21,11 @@ public class PlayerMovement : MonoBehaviour
     public float moveSmoother = 50;
     public GameObject mainballoon;
     public int kat;
+    public Collider[] ragDollCol;
+    public Rigidbody[] ragdollRb;
+    public Collider playerCol;
+    public bool ragdollCheck = false;
+    public CinemachineVirtualCamera cmCam;
 
     Rigidbody rb;
     bool fly;
@@ -32,15 +38,19 @@ public class PlayerMovement : MonoBehaviour
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
         mainballoon = GetComponent<BalloonDestroyer>().mainballoon;
+
+        DisableRagdoll();
     }
 
     private void Update()
     {
         SwerveControl();
+        
 
         if (fly)
         {
-            rb.AddForce(new Vector3(0, GetComponent<BalloonDestroyer>().seviye / 1.2f, 0));
+            //rb.AddForce(new Vector3(0, GetComponent<BalloonDestroyer>().seviye, 0));
+            ActivateRagdoll();
         }
         if (start && !finish)
         {
@@ -93,10 +103,13 @@ public class PlayerMovement : MonoBehaviour
     {
         if (collision.gameObject.tag == "finish")
         {
-            rb.isKinematic = true;
-            rb.constraints = RigidbodyConstraints.FreezeAll;
-            anim.SetBool("Fly", false);
-            anim.SetBool("Bump", true);
+           // Ragdoll Sistemi burayý görmüyor
+
+
+            //rb.isKinematic = true;
+            //rb.constraints = RigidbodyConstraints.FreezeAll;
+            //anim.SetBool("Fly", false);
+            //anim.SetBool("Bump", true);
             finish = true;
         }
     }
@@ -116,6 +129,31 @@ public class PlayerMovement : MonoBehaviour
         if (collision.gameObject.tag == "kat")
         {
             kat++;
+        }
+    }
+
+    public void DisableRagdoll()
+    {
+        ragdollRb = GetComponentsInChildren<Rigidbody>();
+        ragDollCol = GetComponentsInChildren<Collider>();
+        for (var i = ragDollCol.Length - 1; i > 0; i--)
+        {
+            ragDollCol[i].enabled = false;
+            ragdollRb[i].isKinematic = true;
+        }
+    }
+
+    public void ActivateRagdoll()
+    {
+        cmCam.gameObject.SetActive(false);
+        for (var i = ragDollCol.Length - 1; i > 0; i--)
+        {
+            ragDollCol[i].enabled = true;
+            ragdollRb[i].isKinematic = false;
+            ragdollRb[i].mass = 1;
+            ragdollRb[i].AddForce(new Vector3(0, GetComponent<BalloonDestroyer>().seviye, 0));
+            playerCol.enabled = false;
+            anim.enabled = false;
         }
     }
 }
