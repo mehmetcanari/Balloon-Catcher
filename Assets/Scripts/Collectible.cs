@@ -5,7 +5,7 @@ using UnityEngine;
 public class Collectible : MonoBehaviour
 {
     private float rotSpeed = 1;
-   // public ParticleSystem diamondParticle;
+    //public ParticleSystem diamondParticle;
     
 
     void Update()

@@ -4,19 +4,30 @@ using UnityEngine;
 using DG.Tweening;
 public class BalloonDestroyer : MonoBehaviour
 {
-    public GameObject mainballoon;
+    public BaloonTypes baloonTypes;
     public float balonscale;
     public int seviye;
     bool blue = false;
     bool purple = true;
     bool green = false;
+    public GameObject mainballoon;
     public Material redMat;
     public Material greenMat;
     public Material purpleMat;
+
+
+    public enum BaloonTypes
+    {
+        blue,
+        green,
+        purple
+    }
+
     private void Start()
     {
-
+        baloonTypes = BaloonTypes.purple;
     }
+
     private void Update()
     {
         if (!mainballoon.gameObject.activeSelf)
@@ -25,51 +36,53 @@ public class BalloonDestroyer : MonoBehaviour
         }
     }
 
-    #region Triggers
     private void OnTriggerEnter(Collider collision)
     {
-
+        #region Color Triggers
         if (collision.gameObject.tag == "Destroyer")
         {
             Destroy(gameObject);
         }
-        if (collision.gameObject.tag == "blueTrigger")
+
+        else if (collision.gameObject.tag == "blueTrigger")
         {
             blue = true;
             green = false;
             purple = false;
             mainballoon.GetComponent<MeshRenderer>().material = redMat;
         }
-        if (collision.gameObject.tag == "greenTrigger")
+
+        else if (collision.gameObject.tag == "greenTrigger")
         {
             green = true;
             blue = false;
             purple = false;
             mainballoon.GetComponent<MeshRenderer>().material = greenMat;
         }
-        if (collision.gameObject.tag == "purpleTrigger")
+
+        else if (collision.gameObject.tag == "purpleTrigger")
         {
             green = false;
             blue = false;
             purple = true;
             mainballoon.GetComponent<MeshRenderer>().material = purpleMat;
         }
+        #endregion
 
-        #region balloons
+        #region Green Index
         if (green)
         {
             if (collision.gameObject.tag == "green")
-            {
+            {             
                 if (mainballoon.gameObject.activeSelf)
                 {
                     seviye++;
                     mainballoon.transform.DOScale(new Vector3(mainballoon.transform.localScale.x + balonscale, mainballoon.transform.localScale.y + balonscale, mainballoon.transform.localScale.z + balonscale), 0.1f);
                 }
-                Destroy(collision.gameObject);
                 mainballoon.SetActive(true);
-
-
+                Destroy(collision.gameObject);
             }
+
             if (collision.gameObject.tag == "purple")
             {
                 if (mainballoon.gameObject.activeSelf)
@@ -82,27 +95,25 @@ public class BalloonDestroyer : MonoBehaviour
                 Destroy(collision.gameObject);
 
             }
-            if (collision.gameObject.tag == "red")
+            if (collision.gameObject.tag == "blue")
             {
                 if (mainballoon.gameObject.activeSelf)
                 {
-
                     seviye--;
                     mainballoon.transform.DOScale(new Vector3(mainballoon.transform.localScale.x - balonscale, mainballoon.transform.localScale.y - balonscale, mainballoon.transform.localScale.z - balonscale), 0.1f);
                 }
                 Destroy(collision.gameObject);
-
-
             }
-
         }
+        #endregion
+
+        #region Blue Index
         if (blue)
         {
             if (collision.gameObject.tag == "green")
             {
                 if (mainballoon.gameObject.activeSelf)
                 {
-
                     seviye--;
                     mainballoon.transform.DOScale(new Vector3(mainballoon.transform.localScale.x - balonscale, mainballoon.transform.localScale.y - balonscale, mainballoon.transform.localScale.z - balonscale), 0.1f);
                 }
@@ -120,7 +131,7 @@ public class BalloonDestroyer : MonoBehaviour
                 }
                 Destroy(collision.gameObject);
             }
-            if (collision.gameObject.tag == "red")
+            if (collision.gameObject.tag == "blue")
             {
                 if (mainballoon.gameObject.activeSelf)
                 {
@@ -132,6 +143,9 @@ public class BalloonDestroyer : MonoBehaviour
 
             }
         }
+        #endregion
+
+        #region Purple Index
         if (purple)
         {
             if (collision.gameObject.tag == "green")
@@ -157,7 +171,7 @@ public class BalloonDestroyer : MonoBehaviour
                 Destroy(collision.gameObject);
                 mainballoon.SetActive(true);
             }
-            if (collision.gameObject.tag == "red")
+            if (collision.gameObject.tag == "blue")
             {
                 if (mainballoon.gameObject.activeSelf)
                 {
@@ -172,5 +186,4 @@ public class BalloonDestroyer : MonoBehaviour
         }
         #endregion
     }
-    #endregion
 }

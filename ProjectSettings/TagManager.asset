@@ -9,7 +9,6 @@ TagManager:
   - green
   - purple
   - fly
-  - red
   - redTrigger
   - greenTrigger
   - purpleTrigger
@@ -20,6 +19,7 @@ TagManager:
   - finish
   - blueTrigger
   - poptrapStick
+  - blue
   layers:
   - Default
   - TransparentFX

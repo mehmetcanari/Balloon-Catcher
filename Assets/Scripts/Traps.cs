@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class Traps : MonoBehaviour
 {
+    public PlayerMovement pb;
     Vector3 boyut;
     int pop;
+
     private void Start()
     {
         boyut = transform.localScale;
@@ -17,6 +19,11 @@ public class Traps : MonoBehaviour
             gameObject.SetActive(false);
             pop = 0;
         }
+
+        if (transform.localScale == new Vector3(70,70,70))
+        {
+            pb.currentState = PlayerMovement.State.Lose;
+        }
     }
     private void OnTriggerEnter(Collider collision)
     {
@@ -24,6 +31,12 @@ public class Traps : MonoBehaviour
         {
             gameObject.SetActive(false);
             transform.localScale = boyut;
+
+            if (pop == 0)
+            {
+                Debug.Log("Balon patladı");
+                pb.currentState = PlayerMovement.State.Lose;
+            }
         }
         if (collision.gameObject.tag == "trapdetect")
         {
