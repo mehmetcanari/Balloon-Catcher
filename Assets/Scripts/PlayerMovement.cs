@@ -5,30 +5,35 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [Header("Movement")]
-    public Animator anim;
-    public float moveSpeedZ = 10;
     [Range(-7.5f, 7.5f)]
     [SerializeField]
     private float xClamp = 0;
     public Vector2 m_startPos;
     public Vector2 m_deltaPos;
-    private float moveSpeedX = 10;
-    [Range(50, 100)]
-    public float moveSmoother = 50;
-    GameObject mainballoon;
+    public State currentState;
     public int kat;
+    public float moveSmoother = 50;
+    private float moveSpeedX = 10;
+    public float moveSpeedZ = 10;
+    public Rigidbody rb;
+    public Animator anim;
+    private GameObject mainballoon;
+    public GameObject player;
+    private bool finish = false;
+    private bool start = false;
+    private bool fly;
 
-    Rigidbody rb;
-    bool fly;
-    bool finish = false;
-    bool start = false;
+
+    public enum State
+    {
+        Start,
+        Win,
+        Lose
+    }
 
 
     private void Start()
     {
-        anim = GetComponent<Animator>();
-        rb = GetComponent<Rigidbody>();
         mainballoon = GetComponent<BalloonDestroyer>().mainballoon;
     }
 
@@ -59,18 +64,12 @@ public class PlayerMovement : MonoBehaviour
         {
             CallSwerve();
 
-            xClamp = Mathf.Clamp(transform.position.x, -2f, 2f);
+            xClamp = Mathf.Clamp(transform.position.x, -3f, 3f);
             transform.position = new Vector3(xClamp, transform.position.y, transform.position.z);
         }
     }
 
-    public void CallSwerve()
-    {
-        m_deltaPos = (Vector2)Input.mousePosition - m_startPos;
-        m_deltaPos.y = 0;
-        transform.position = new Vector3(Mathf.Lerp(transform.position.x, transform.position.x + (m_deltaPos.x / Screen.width) * moveSmoother, moveSpeedX), transform.position.y, transform.position.z);
-        m_startPos = Input.mousePosition;
-    }
+    #region Collision / Trigger
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "finish")
@@ -80,6 +79,11 @@ public class PlayerMovement : MonoBehaviour
             anim.SetBool("Fly", false);
             anim.SetBool("Bump", true);
             finish = true;
+        }
+
+        if (collision.gameObject.tag == "poptrapStick")
+        {
+            currentState = State.Lose;
         }
     }
     private void OnTriggerEnter(Collider collision)
@@ -100,4 +104,17 @@ public class PlayerMovement : MonoBehaviour
             kat++;
         }
     }
+
+    #endregion
+
+
+    #region Methods
+    public void CallSwerve()
+    {
+        m_deltaPos = (Vector2)Input.mousePosition - m_startPos;
+        m_deltaPos.y = 0;
+        transform.position = new Vector3(Mathf.Lerp(transform.position.x, transform.position.x + (m_deltaPos.x / Screen.width) * moveSmoother, moveSpeedX), transform.position.y, transform.position.z);
+        m_startPos = Input.mousePosition;
+    }
+    #endregion
 }

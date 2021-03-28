@@ -7,7 +7,7 @@ public class BalloonDestroyer : MonoBehaviour
     public GameObject mainballoon;
     public float balonscale;
     public int seviye;
-    bool red = false;
+    bool blue = false;
     bool purple = true;
     bool green = false;
     public Material redMat;
@@ -25,7 +25,7 @@ public class BalloonDestroyer : MonoBehaviour
         }
     }
 
-
+    #region Triggers
     private void OnTriggerEnter(Collider collision)
     {
 
@@ -33,9 +33,9 @@ public class BalloonDestroyer : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        if (collision.gameObject.tag == "redTrigger")
+        if (collision.gameObject.tag == "blueTrigger")
         {
-            red = true;
+            blue = true;
             green = false;
             purple = false;
             mainballoon.GetComponent<MeshRenderer>().material = redMat;
@@ -43,14 +43,14 @@ public class BalloonDestroyer : MonoBehaviour
         if (collision.gameObject.tag == "greenTrigger")
         {
             green = true;
-            red = false;
+            blue = false;
             purple = false;
             mainballoon.GetComponent<MeshRenderer>().material = greenMat;
         }
         if (collision.gameObject.tag == "purpleTrigger")
         {
             green = false;
-            red = false;
+            blue = false;
             purple = true;
             mainballoon.GetComponent<MeshRenderer>().material = purpleMat;
         }
@@ -96,7 +96,7 @@ public class BalloonDestroyer : MonoBehaviour
             }
 
         }
-        if (red)
+        if (blue)
         {
             if (collision.gameObject.tag == "green")
             {
@@ -172,4 +172,5 @@ public class BalloonDestroyer : MonoBehaviour
         }
         #endregion
     }
+    #endregion
 }

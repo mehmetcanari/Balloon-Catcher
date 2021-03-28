@@ -18,6 +18,8 @@ TagManager:
   - trapdetect
   - kat
   - finish
+  - blueTrigger
+  - poptrapStick
   layers:
   - Default
   - TransparentFX

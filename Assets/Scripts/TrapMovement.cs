@@ -5,12 +5,6 @@ using DG.Tweening;
 
 public class TrapMovement : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     public void Fourth()
     {
         transform.DOLocalMoveY(1, 1);
