@@ -4,6 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 public class BalloonDestroyer : MonoBehaviour
 {
+    public PlayerMovement pb;
     public BaloonTypes baloonTypes;
     public float balonscale;
     public int seviye;
@@ -46,6 +47,7 @@ public class BalloonDestroyer : MonoBehaviour
 
         else if (collision.gameObject.tag == "blueTrigger")
         {
+            baloonTypes = BaloonTypes.blue;
             blue = true;
             green = false;
             purple = false;
@@ -54,6 +56,7 @@ public class BalloonDestroyer : MonoBehaviour
 
         else if (collision.gameObject.tag == "greenTrigger")
         {
+            baloonTypes = BaloonTypes.green;
             green = true;
             blue = false;
             purple = false;
@@ -62,6 +65,7 @@ public class BalloonDestroyer : MonoBehaviour
 
         else if (collision.gameObject.tag == "purpleTrigger")
         {
+            baloonTypes = BaloonTypes.purple;
             green = false;
             blue = false;
             purple = true;
@@ -118,20 +122,19 @@ public class BalloonDestroyer : MonoBehaviour
                     mainballoon.transform.DOScale(new Vector3(mainballoon.transform.localScale.x - balonscale, mainballoon.transform.localScale.y - balonscale, mainballoon.transform.localScale.z - balonscale), 0.1f);
                 }
                 Destroy(collision.gameObject);
-
-
             }
-            if (collision.gameObject.tag == "purple")
+            
+            else if (collision.gameObject.tag == "purple")
             {
                 if (mainballoon.gameObject.activeSelf)
                 {
-
                     seviye--;
                     mainballoon.transform.DOScale(new Vector3(mainballoon.transform.localScale.x - balonscale, mainballoon.transform.localScale.y - balonscale, mainballoon.transform.localScale.z - balonscale), 0.1f);
                 }
                 Destroy(collision.gameObject);
             }
-            if (collision.gameObject.tag == "blue")
+            
+            else if (collision.gameObject.tag == "blue")
             {
                 if (mainballoon.gameObject.activeSelf)
                 {
@@ -150,7 +153,6 @@ public class BalloonDestroyer : MonoBehaviour
         {
             if (collision.gameObject.tag == "green")
             {
-
                 if (mainballoon.gameObject.activeSelf)
                 {
 
@@ -158,10 +160,9 @@ public class BalloonDestroyer : MonoBehaviour
                     mainballoon.transform.DOScale(new Vector3(mainballoon.transform.localScale.x - balonscale, mainballoon.transform.localScale.y - balonscale, mainballoon.transform.localScale.z - balonscale), 0.1f);
                 }
                 Destroy(collision.gameObject);
-
-
             }
-            if (collision.gameObject.tag == "purple")
+
+            else if (collision.gameObject.tag == "purple")
             {
                 if (mainballoon.gameObject.activeSelf)
                 {
@@ -169,9 +170,9 @@ public class BalloonDestroyer : MonoBehaviour
                     mainballoon.transform.DOScale(new Vector3(mainballoon.transform.localScale.x + balonscale, mainballoon.transform.localScale.y + balonscale, mainballoon.transform.localScale.z + balonscale), 0.1f);
                 }
                 Destroy(collision.gameObject);
-                mainballoon.SetActive(true);
             }
-            if (collision.gameObject.tag == "blue")
+
+            else if (collision.gameObject.tag == "blue")
             {
                 if (mainballoon.gameObject.activeSelf)
                 {
@@ -180,9 +181,12 @@ public class BalloonDestroyer : MonoBehaviour
                     mainballoon.transform.DOScale(new Vector3(mainballoon.transform.localScale.x - balonscale, mainballoon.transform.localScale.y - balonscale, mainballoon.transform.localScale.z - balonscale), 0.1f);
                 }
                 Destroy(collision.gameObject);
-
             }
 
+            else if (collision.gameObject.tag == "trap" && baloonTypes == BaloonTypes.purple)
+            {
+                pb.currentState = PlayerMovement.State.Lose;
+            }
         }
         #endregion
     }

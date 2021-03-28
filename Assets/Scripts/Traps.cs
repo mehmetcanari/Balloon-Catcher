@@ -6,7 +6,7 @@ public class Traps : MonoBehaviour
 {
     public PlayerMovement pb;
     Vector3 boyut;
-    int pop;
+    private int pop;
 
     private void Start()
     {
@@ -25,6 +25,8 @@ public class Traps : MonoBehaviour
             pb.currentState = PlayerMovement.State.Lose;
         }
     }
+
+    #region Triggers
     private void OnTriggerEnter(Collider collision)
     {
         if (collision.gameObject.tag == "trap")
@@ -58,4 +60,5 @@ public class Traps : MonoBehaviour
             pop--;
         }
     }
+    #endregion
 }

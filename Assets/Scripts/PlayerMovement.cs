@@ -2,9 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class PlayerMovement : MonoBehaviour
 {
+    #region Fields
     [Range(-7.5f, 7.5f)]
     [SerializeField]
     private float xClamp = 0;
@@ -20,10 +22,9 @@ public class PlayerMovement : MonoBehaviour
     private GameObject mainballoon;
     public GameObject player;
     private bool finish = false;
-    private bool start = false;
     private bool fly;
     private bool isStarted = false;
-
+    #endregion
 
     public enum State
     {
@@ -46,6 +47,8 @@ public class PlayerMovement : MonoBehaviour
         {
             anim.SetBool("Run", false);
             isStarted = false;
+            transform.DOLocalRotate(new Vector3(0, 0, 0), 0.2f);
+            mainballoon.gameObject.SetActive(false);
         }
 
         if (currentState == State.Start)
@@ -111,7 +114,6 @@ public class PlayerMovement : MonoBehaviour
             kat++;
         }
     }
-
     #endregion
 
 
@@ -133,8 +135,25 @@ public class PlayerMovement : MonoBehaviour
                 transform.position = new Vector3(Mathf.Lerp(transform.position.x, transform.position.x + (m_deltaPos.x / Screen.width) * moveSmoother, moveSpeedX), transform.position.y, transform.position.z);
                 m_startPos = Input.mousePosition;
 
+                if (m_deltaPos.x > 0)
+                {
+                    //Debug.Log(m_deltaPos);
+                    transform.DOLocalRotate(new Vector3(0, 45, 0), 0.2f);
+                }
+                else if (m_deltaPos.x < 0)
+                {
+                    //Debug.Log(m_deltaPos);
+                    transform.DOLocalRotate(new Vector3(0, -45, 0), 0.2f);
+                }
+
                 xClamp = Mathf.Clamp(transform.position.x, -3f, 3f);
                 transform.position = new Vector3(xClamp, transform.position.y, transform.position.z);
+            }
+
+            if (Input.GetMouseButtonUp(0))
+            {
+                m_deltaPos = Vector3.zero;
+                transform.DOLocalRotate(new Vector3(0, 0, 0), 0.2f);
             }
         }
     }
