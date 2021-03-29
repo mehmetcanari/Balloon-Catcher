@@ -70,6 +70,7 @@ public class PlayerMovement : MonoBehaviour
             m_startPos = Input.mousePosition;
             anim.SetBool("Run", true);
             start = true;
+            
             if(tapTo != null)
             {
                 Destroy(tapTo);
@@ -78,8 +79,11 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetMouseButton(0))
         {
-            CallSwerve();
-
+            if (!finish)
+            {
+                CallSwerve();
+            }
+            
             xClamp = Mathf.Clamp(transform.position.x, -2f, 2f);
             transform.position = new Vector3(xClamp, transform.position.y, transform.position.z);
         }

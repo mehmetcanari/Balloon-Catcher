@@ -19,14 +19,17 @@ public class BalloonDestroyer : MonoBehaviour
     public ParticleSystem greenPuff;
     public ParticleSystem bluePuff;
     public ParticleSystem purplePuff;
-    Vector3 numberSpawn;
-    private void Start()
-    {
-    }
+    public Vector3 numberSpawn;
+
     private void Update()
     {
         numberSpawn = new Vector3(transform.position.x + 1, transform.position.y + 2, transform.position.z);
         if (!mainballoon.gameObject.activeSelf)
+        {
+            seviye = 0;
+        }
+
+        if (seviye < 0)
         {
             seviye = 0;
         }
@@ -197,7 +200,6 @@ public class BalloonDestroyer : MonoBehaviour
             {
                 if (mainballoon.gameObject.activeSelf)
                 {
-
                     seviye--;
                     mainballoon.transform.DOScale(new Vector3(mainballoon.transform.localScale.x - balonscale, mainballoon.transform.localScale.y - balonscale, mainballoon.transform.localScale.z - balonscale), 0.1f);
                     mainballoon.transform.position -= new Vector3(0, 0.05f, 0);
@@ -205,9 +207,7 @@ public class BalloonDestroyer : MonoBehaviour
                 }
                 Instantiate(particle, collision.gameObject.transform.position, Quaternion.identity);
                 Destroy(collision.gameObject);
-
             }
-
         }
         #endregion
     }
