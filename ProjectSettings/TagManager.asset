@@ -21,6 +21,7 @@ TagManager:
   - poptrapStick
   - blue
   - arm
+  - fail
   layers:
   - Default
   - TransparentFX

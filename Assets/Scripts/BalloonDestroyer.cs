@@ -4,113 +4,99 @@ using UnityEngine;
 using DG.Tweening;
 public class BalloonDestroyer : MonoBehaviour
 {
-    public PlayerMovement pb;
-    public BaloonTypes baloonTypes;
+    public GameObject mainballoon;
     public float balonscale;
-    public float balonscalePlus;
     public int seviye;
-    bool blue = false;
+    bool red = false;
     bool purple = true;
     bool green = false;
-    private bool stopCountNegative = false;
-    public GameObject mainballoon;
-    public Material redMat;
+    public Material blueMat;
     public Material greenMat;
     public Material purpleMat;
-
-    public enum BaloonTypes
-    {
-        blue,
-        green,
-        purple
-    }
-
+    public GameObject plusOne;
+    public GameObject minusOne;
+    public ParticleSystem particle;
+    public ParticleSystem greenPuff;
+    public ParticleSystem bluePuff;
+    public ParticleSystem purplePuff;
+    Vector3 numberSpawn;
     private void Start()
     {
-        baloonTypes = BaloonTypes.purple;
     }
-
     private void Update()
     {
+        numberSpawn = new Vector3(transform.position.x + 1, transform.position.y + 2, transform.position.z);
         if (!mainballoon.gameObject.activeSelf)
         {
             seviye = 0;
         }
     }
 
+
     private void OnTriggerEnter(Collider collision)
     {
-        #region Color Triggers
+
         if (collision.gameObject.tag == "Destroyer")
         {
             Destroy(gameObject);
         }
-
-        else if (collision.gameObject.tag == "blueTrigger")
+        if (collision.gameObject.tag == "blueTrigger")
         {
-            baloonTypes = BaloonTypes.blue;
-            blue = true;
+            red = true;
             green = false;
             purple = false;
-            stopCountNegative = false;
-            mainballoon.GetComponent<MeshRenderer>().material = redMat;
+            mainballoon.GetComponent<MeshRenderer>().material = blueMat;
+            if (mainballoon.gameObject.activeSelf)
+                Instantiate(bluePuff, mainballoon.transform.position, Quaternion.identity);
         }
-
-        else if (collision.gameObject.tag == "greenTrigger")
+        if (collision.gameObject.tag == "greenTrigger")
         {
-            stopCountNegative = false;
-            baloonTypes = BaloonTypes.green;
             green = true;
-            blue = false;
+            red = false;
             purple = false;
             mainballoon.GetComponent<MeshRenderer>().material = greenMat;
+            if (mainballoon.gameObject.activeSelf)
+                Instantiate(greenPuff, mainballoon.transform.position, Quaternion.identity);
         }
-
-        else if (collision.gameObject.tag == "purpleTrigger")
+        if (collision.gameObject.tag == "purpleTrigger")
         {
-            stopCountNegative = false;
-            baloonTypes = BaloonTypes.purple;
             green = false;
-            blue = false;
+            red = false;
             purple = true;
             mainballoon.GetComponent<MeshRenderer>().material = purpleMat;
+            if (mainballoon.gameObject.activeSelf)
+                Instantiate(purplePuff, mainballoon.transform.position, Quaternion.identity);
         }
-        #endregion
 
-        #region Green Index
-        if (green) 
+        #region balloons
+        if (green)
         {
             if (collision.gameObject.tag == "green")
-            {             
+            {
                 if (mainballoon.gameObject.activeSelf)
                 {
                     seviye++;
-                    mainballoon.transform.DOScale(new Vector3(mainballoon.transform.localScale.x + (balonscale + balonscalePlus), mainballoon.transform.localScale.y + (balonscale + balonscalePlus), mainballoon.transform.localScale.z + (balonscale + balonscalePlus)), 0.1f);
-                    mainballoon.transform.position += new Vector3(0, 0.05f, 0); // Balonlar toplandığında hem büyür hemde Y değeri artar
+                    mainballoon.transform.DOScale(new Vector3(mainballoon.transform.localScale.x + balonscale, mainballoon.transform.localScale.y + balonscale, mainballoon.transform.localScale.z + balonscale), 0.1f);
+                    mainballoon.transform.position += new Vector3(0, 0.05f, 0);
+                    Instantiate(plusOne, numberSpawn, Quaternion.identity);
                 }
-                mainballoon.SetActive(true);
+                Instantiate(particle, collision.gameObject.transform.position, Quaternion.identity);
                 Destroy(collision.gameObject);
-            }
+                mainballoon.SetActive(true);
 
+
+            }
             if (collision.gameObject.tag == "purple")
             {
                 if (mainballoon.gameObject.activeSelf)
                 {
+
                     seviye--;
-
-                    if (mainballoon.transform.localScale == Vector3.zero)
-                    {
-                        Debug.Log("0 oldu");
-                        stopCountNegative = true;
-                    }
-
-                    if (!stopCountNegative)
-                    {
-                        mainballoon.transform.DOScale(new Vector3(mainballoon.transform.localScale.x - balonscale, mainballoon.transform.localScale.y - balonscale, mainballoon.transform.localScale.z - balonscale), 0.1f);
-                        mainballoon.transform.position -= new Vector3(0, 0.05f, 0); //Farklı balonu toplarsa hem küçülür hemde Y değeri azalır.
-                    }
+                    mainballoon.transform.DOScale(new Vector3(mainballoon.transform.localScale.x - balonscale, mainballoon.transform.localScale.y - balonscale, mainballoon.transform.localScale.z - balonscale), 0.1f);
+                    mainballoon.transform.position -= new Vector3(0, 0.05f, 0);
+                    Instantiate(minusOne, numberSpawn, Quaternion.identity);
                 }
-
+                Instantiate(particle, collision.gameObject.transform.position, Quaternion.identity);
                 Destroy(collision.gameObject);
 
             }
@@ -118,144 +104,110 @@ public class BalloonDestroyer : MonoBehaviour
             {
                 if (mainballoon.gameObject.activeSelf)
                 {
+
                     seviye--;
-                    
-                    if (mainballoon.transform.localScale == Vector3.zero)
-                    {
-                        Debug.Log("0 oldu");
-                        stopCountNegative = true;
-                    }
-
-                    if (!stopCountNegative)
-                    {
-                        mainballoon.transform.DOScale(new Vector3(mainballoon.transform.localScale.x - balonscale, mainballoon.transform.localScale.y - balonscale, mainballoon.transform.localScale.z - balonscale), 0.1f);
-                        mainballoon.transform.position -= new Vector3(0, 0.05f, 0);
-                    }
+                    mainballoon.transform.DOScale(new Vector3(mainballoon.transform.localScale.x - balonscale, mainballoon.transform.localScale.y - balonscale, mainballoon.transform.localScale.z - balonscale), 0.1f);
+                    mainballoon.transform.position -= new Vector3(0, 0.05f, 0);
+                    Instantiate(minusOne, numberSpawn, Quaternion.identity);
                 }
+                Instantiate(particle, collision.gameObject.transform.position, Quaternion.identity);
                 Destroy(collision.gameObject);
-            }
-        }
-        #endregion
 
-        #region Blue Index
-        if (blue)
+
+            }
+
+        }
+        if (red)
         {
             if (collision.gameObject.tag == "green")
             {
                 if (mainballoon.gameObject.activeSelf)
                 {
+
                     seviye--;
-                    if (mainballoon.transform.localScale == Vector3.zero)
-                    {
-                        Debug.Log("0 oldu");
-                        stopCountNegative = true;
-                    }
-                    if (!stopCountNegative)
-                    {
-                        mainballoon.transform.DOScale(new Vector3(mainballoon.transform.localScale.x - balonscale, mainballoon.transform.localScale.y - balonscale, mainballoon.transform.localScale.z - balonscale), 0.1f);
-                        mainballoon.transform.position -= new Vector3(0, 0.05f, 0);
-                    }
+                    mainballoon.transform.DOScale(new Vector3(mainballoon.transform.localScale.x - balonscale, mainballoon.transform.localScale.y - balonscale, mainballoon.transform.localScale.z - balonscale), 0.1f);
+                    mainballoon.transform.position -= new Vector3(0, 0.05f, 0);
+                    Instantiate(minusOne, numberSpawn, Quaternion.identity);
                 }
+                Instantiate(particle, collision.gameObject.transform.position, Quaternion.identity);
                 Destroy(collision.gameObject);
+
+
             }
-            
-            else if (collision.gameObject.tag == "purple")
+            if (collision.gameObject.tag == "purple")
             {
                 if (mainballoon.gameObject.activeSelf)
                 {
+
                     seviye--;
-
-                    if (mainballoon.transform.localScale == Vector3.zero)
-                    {
-                        Debug.Log("0 oldu");
-                        stopCountNegative = true;
-                    }
-
-                    if (!stopCountNegative)
-                    {
-                        mainballoon.transform.DOScale(new Vector3(mainballoon.transform.localScale.x - balonscale, mainballoon.transform.localScale.y - balonscale, mainballoon.transform.localScale.z - balonscale), 0.1f);
-                        mainballoon.transform.position -= new Vector3(0, 0.05f, 0);
-                    }
+                    mainballoon.transform.DOScale(new Vector3(mainballoon.transform.localScale.x - balonscale, mainballoon.transform.localScale.y - balonscale, mainballoon.transform.localScale.z - balonscale), 0.1f);
+                    mainballoon.transform.position -= new Vector3(0, 0.05f, 0);
+                    Instantiate(minusOne, numberSpawn, Quaternion.identity);
                 }
+                Instantiate(particle, collision.gameObject.transform.position, Quaternion.identity);
                 Destroy(collision.gameObject);
             }
-            
-            else if (collision.gameObject.tag == "blue")
+            if (collision.gameObject.tag == "blue")
             {
                 if (mainballoon.gameObject.activeSelf)
                 {
                     seviye++;
-                    mainballoon.transform.DOScale(new Vector3(mainballoon.transform.localScale.x + (balonscale + balonscalePlus), mainballoon.transform.localScale.y + (balonscale + balonscalePlus), mainballoon.transform.localScale.z + (balonscale + balonscalePlus)), 0.1f);
+                    mainballoon.transform.DOScale(new Vector3(mainballoon.transform.localScale.x + balonscale, mainballoon.transform.localScale.y + balonscale, mainballoon.transform.localScale.z + balonscale), 0.1f);
                     mainballoon.transform.position += new Vector3(0, 0.05f, 0);
+                    Instantiate(plusOne, numberSpawn, Quaternion.identity);
                 }
+                Instantiate(particle, collision.gameObject.transform.position, Quaternion.identity);
                 Destroy(collision.gameObject);
                 mainballoon.SetActive(true);
 
             }
         }
-        #endregion
-
-        #region Purple Index
         if (purple)
         {
             if (collision.gameObject.tag == "green")
             {
+
                 if (mainballoon.gameObject.activeSelf)
                 {
+
                     seviye--;
-
-                    if (mainballoon.transform.localScale == Vector3.zero)
-                    {
-                        Debug.Log("0 oldu");
-                        stopCountNegative = true;
-                    }
-                    
-                    if (!stopCountNegative)
-                    {
-                        mainballoon.transform.DOScale(new Vector3(mainballoon.transform.localScale.x - balonscale, mainballoon.transform.localScale.y - balonscale, mainballoon.transform.localScale.z - balonscale), 0.1f);
-                        mainballoon.transform.position -= new Vector3(0, 0.05f, 0);
-                    }
+                    mainballoon.transform.DOScale(new Vector3(mainballoon.transform.localScale.x - balonscale, mainballoon.transform.localScale.y - balonscale, mainballoon.transform.localScale.z - balonscale), 0.1f);
+                    mainballoon.transform.position -= new Vector3(0, 0.05f, 0);
+                    Instantiate(minusOne, numberSpawn, Quaternion.identity);
                 }
+                Instantiate(particle, collision.gameObject.transform.position, Quaternion.identity);
                 Destroy(collision.gameObject);
-            }
 
-            else if (collision.gameObject.tag == "purple")
+
+            }
+            if (collision.gameObject.tag == "purple")
             {
                 if (mainballoon.gameObject.activeSelf)
                 {
                     seviye++;
-                    mainballoon.transform.DOScale(new Vector3(mainballoon.transform.localScale.x + (balonscale + balonscalePlus), mainballoon.transform.localScale.y + (balonscale + balonscalePlus), mainballoon.transform.localScale.z + (balonscale + balonscalePlus)), 0.1f);
+                    mainballoon.transform.DOScale(new Vector3(mainballoon.transform.localScale.x + balonscale, mainballoon.transform.localScale.y + balonscale, mainballoon.transform.localScale.z + balonscale), 0.1f);
                     mainballoon.transform.position += new Vector3(0, 0.05f, 0);
+                    Instantiate(plusOne, numberSpawn, Quaternion.identity);
                 }
+                Instantiate(particle, collision.gameObject.transform.position, Quaternion.identity);
                 Destroy(collision.gameObject);
+                mainballoon.SetActive(true);
             }
-
-            else if (collision.gameObject.tag == "blue")
+            if (collision.gameObject.tag == "blue")
             {
                 if (mainballoon.gameObject.activeSelf)
                 {
+
                     seviye--;
-
-                    if (mainballoon.transform.localScale == Vector3.zero)
-                    {
-                        Debug.Log("0 oldu");
-                        stopCountNegative = true;
-                    }
-
-                    if (!stopCountNegative)
-                    {
-                        mainballoon.transform.DOScale(new Vector3(mainballoon.transform.localScale.x - balonscale, mainballoon.transform.localScale.y - balonscale, mainballoon.transform.localScale.z - balonscale), 0.1f);
-                        mainballoon.transform.position -= new Vector3(0, 0.05f, 0);
-                    }
+                    mainballoon.transform.DOScale(new Vector3(mainballoon.transform.localScale.x - balonscale, mainballoon.transform.localScale.y - balonscale, mainballoon.transform.localScale.z - balonscale), 0.1f);
+                    mainballoon.transform.position -= new Vector3(0, 0.05f, 0);
+                    Instantiate(minusOne, numberSpawn, Quaternion.identity);
                 }
+                Instantiate(particle, collision.gameObject.transform.position, Quaternion.identity);
                 Destroy(collision.gameObject);
+
             }
 
-            else if (collision.gameObject.tag == "trap")
-            {
-                pb.mainballoon.transform.DOScale(Vector3.zero, 0.1f);
-                Instantiate(pb.balloonPop, pb.mainballoon.transform.position, Quaternion.identity);
-            }
         }
         #endregion
     }

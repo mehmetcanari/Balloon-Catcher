@@ -5,7 +5,7 @@ using DG.Tweening;
 
 public class TrapMovement : MonoBehaviour
 {
-    public void Fourth()
+    public void Forth()
     {
         transform.DOLocalMoveY(1, 1);
         //Invoke("Back", 1f);

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using Cinemachine;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -20,14 +21,17 @@ public class PlayerMovement : MonoBehaviour
     [Range(10, 100)]
     public float moveSmoother = 50;
     public GameObject mainballoon;
+    public GameObject tapTo;
+    public GameObject nextButton;
+    public GameObject retryButton;
     public int kat;
     public Collider[] ragDollCol;
     public Rigidbody[] ragdollRb;
     public Collider playerCol;
     public bool ragdollCheck = false;
     public CinemachineVirtualCamera cmCam;
+    public Transform ragdollTransform;
     public BalloonDestroyer bd;
-
     Rigidbody rb;
     bool fly;
     bool finish = false;
@@ -40,6 +44,7 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         mainballoon = GetComponent<BalloonDestroyer>().mainballoon;
 
+
         DisableRagdoll();
     }
 
@@ -50,8 +55,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (fly && !finish)
         {
-            rb.AddForce(new Vector3(0, GetComponent<BalloonDestroyer>().seviye, 0));
-            ActivateRagdoll();
+            rb.AddForce(new Vector3(0, GetComponent<BalloonDestroyer>().seviye / 1.1f, 0));
         }
         if (start && !finish)
         {
@@ -66,6 +70,10 @@ public class PlayerMovement : MonoBehaviour
             m_startPos = Input.mousePosition;
             anim.SetBool("Run", true);
             start = true;
+            if(tapTo != null)
+            {
+                Destroy(tapTo);
+            }
         }
 
         if (Input.GetMouseButton(0))
@@ -100,6 +108,21 @@ public class PlayerMovement : MonoBehaviour
         }
 
     }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "finish")
+        {
+            Debug.Log("finish");
+
+            rb.isKinematic = true;
+            rb.constraints = RigidbodyConstraints.FreezeAll;
+            finish = true;
+
+            anim.SetBool("Fly", false);
+            anim.SetBool("Bump", true);
+            nextButton.SetActive(true);
+        }
+    }
     private void OnTriggerEnter(Collider collision)
     {
         if (collision.gameObject.tag == "fly")
@@ -108,6 +131,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 rb.useGravity = false;
                 fly = true;
+                mainballoon.GetComponent<Collider>().isTrigger = true;
             }
 
             anim.SetBool("Run", false);
@@ -117,32 +141,12 @@ public class PlayerMovement : MonoBehaviour
         {
             kat++;
         }
-
-        if (collision.gameObject.tag == "trap")
+        if (collision.gameObject.tag == "fail")
         {
-            bd.seviye = 0;
-            bd.mainballoon.gameObject.transform.DOScale(Vector3.zero, 0f);
-            Instantiate(balloonPop, bd.mainballoon.transform.position, Quaternion.identity);
-        }
-        if (collision.gameObject.tag == "finish")
-        {
-            // Ragdoll Sistemi burayý görmüyor
-            Debug.Log("finish");
-
-            rb.isKinematic = true;
-            rb.constraints = RigidbodyConstraints.FreezeAll;
-
-            for (var i = ragDollCol.Length - 1; i > 1; i--)
-            {
-                ragDollCol[i].enabled = true;
-                //ragdollRb[i].isKinematic = true;
-                //playerCol.isTrigger = false;
-                ragdollRb[i].velocity = Vector3.zero;
-                ragDollCol[i].transform.parent = collision.gameObject.transform;
-                ragdollRb[i].constraints = RigidbodyConstraints.FreezeAll;
-                //ragdollRb[i].useGravity = true;
-            }
-            finish = true;
+            cmCam.Follow = ragdollTransform;
+            cmCam.LookAt = ragdollTransform;
+            retryButton.SetActive(true);
+            ActivateRagdoll();
         }
     }
 
@@ -150,24 +154,21 @@ public class PlayerMovement : MonoBehaviour
     {
         ragdollRb = GetComponentsInChildren<Rigidbody>();
         ragDollCol = GetComponentsInChildren<Collider>();
-        for (var i = ragDollCol.Length - 1; i > 0; i--)
+        for (var i = ragDollCol.Length - 1; i > 1; i--)
         {
             ragDollCol[i].enabled = false;
             ragdollRb[i].isKinematic = true;
         }
     }
-
     public void ActivateRagdoll()
     {
-        //cmCam.gameObject.SetActive(false);
         Debug.Log("Ragdoll");
         for (var i = ragDollCol.Length - 1; i > 1; i--)
         {
             ragDollCol[i].enabled = true;
             ragdollRb[i].isKinematic = false;
             ragdollRb[i].mass = 1;
-            ragdollRb[i].useGravity = false;
-            ragdollRb[i].AddForce(new Vector3(0, GetComponent<BalloonDestroyer>().seviye, 0));
+            ragdollRb[i].useGravity = true;
             playerCol.isTrigger = true;
             anim.enabled = false;
         }
@@ -175,5 +176,10 @@ public class PlayerMovement : MonoBehaviour
         {
             enabled = false;
         }
+    }
+
+    public void Restart()
+    {
+        SceneManager.LoadScene(0);
     }
 }

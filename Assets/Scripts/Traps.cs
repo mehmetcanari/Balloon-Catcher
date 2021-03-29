@@ -5,10 +5,10 @@ using DG.Tweening;
 
 public class Traps : MonoBehaviour
 {
-    public PlayerMovement pb;
-    public BalloonDestroyer bd;
     Vector3 boyut;
+    Vector3 pos;
     private int pop;
+    public ParticleSystem balloonPop;
 
     private void Start()
     {
@@ -18,29 +18,34 @@ public class Traps : MonoBehaviour
     {
         if (pop == 2)
         {
-            gameObject.SetActive(false);
+            Instantiate(balloonPop, transform.position, Quaternion.identity);
+            transform.localScale = boyut;
             pop = 0;
+            gameObject.SetActive(false);
+        }
+        if (transform.localScale.x < 90)
+        {
+            transform.localScale = boyut;
+            Instantiate(balloonPop, transform.position, Quaternion.identity);
+            gameObject.SetActive(false);
         }
     }
 
     #region Triggers
     private void OnTriggerEnter(Collider collision)
     {
+            Debug.Log(collision.gameObject);
         if (collision.gameObject.tag == "trap")
         {
             gameObject.SetActive(false);
-            Instantiate(pb.balloonPop, pb.mainballoon.transform.position, Quaternion.identity);
-            
-            if (pop == 0)
-            {
-                Debug.Log("Balon patladı");
-            }
+            transform.localScale = boyut;
+            Instantiate(balloonPop, transform.position, Quaternion.identity);
         }
         if (collision.gameObject.tag == "trapdetect")
         {
-            collision.gameObject.transform.Find("trap").GetComponent<TrapMovement>().Fourth();
+            collision.gameObject.transform.Find("trap").GetComponent<TrapMovement>().Forth();
         }
-        
+
     }
     private void OnCollisionEnter(Collision collision)
     {
