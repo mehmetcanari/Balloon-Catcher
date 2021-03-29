@@ -4629,16 +4629,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -5477749408508380018, guid: 6ecce5abd394a01449c14eaa066b1d80,
         type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1242.37
-      objectReference: {fileID: 0}
-    - target: {fileID: -5477749408508380018, guid: 6ecce5abd394a01449c14eaa066b1d80,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 16.6
-      objectReference: {fileID: 0}
-    - target: {fileID: -5477749408508380018, guid: 6ecce5abd394a01449c14eaa066b1d80,
-        type: 3}
       propertyPath: m_LocalScale.x
       value: 117.4
       objectReference: {fileID: 0}
@@ -4646,6 +4636,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.y
       value: -6
+      objectReference: {fileID: 0}
+    - target: {fileID: -5477749408508380018, guid: 6ecce5abd394a01449c14eaa066b1d80,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1242.37
+      objectReference: {fileID: 0}
+    - target: {fileID: -5477749408508380018, guid: 6ecce5abd394a01449c14eaa066b1d80,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 16.6
       objectReference: {fileID: 0}
     - target: {fileID: -5477749408508380018, guid: 6ecce5abd394a01449c14eaa066b1d80,
         type: 3}
@@ -8399,6 +8399,7 @@ MonoBehaviour:
   bluePuff: {fileID: 556664320541593502, guid: b6ae45becb5fa074089cdec694b02388, type: 3}
   purplePuff: {fileID: 556664320541593502, guid: 67b9162f7dc24b4418947ad77f136646,
     type: 3}
+  tr: {fileID: 1691617200}
 --- !u!114 &1223573671
 MonoBehaviour:
   m_ObjectHideFlags: 0

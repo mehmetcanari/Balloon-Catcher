@@ -6,7 +6,6 @@ using DG.Tweening;
 public class Traps : MonoBehaviour
 {
     Vector3 boyut;
-    Vector3 pos;
     private int pop;
     public ParticleSystem balloonPop;
 
@@ -37,9 +36,7 @@ public class Traps : MonoBehaviour
             Debug.Log(collision.gameObject);
         if (collision.gameObject.tag == "trap")
         {
-            gameObject.SetActive(false);
-            transform.localScale = boyut;
-            Instantiate(balloonPop, transform.position, Quaternion.identity);
+            BalloonPop();
         }
         if (collision.gameObject.tag == "trapdetect")
         {
@@ -60,6 +57,13 @@ public class Traps : MonoBehaviour
         {
             pop--;
         }
+    }
+
+    public void BalloonPop()
+    {
+        gameObject.SetActive(false);
+        transform.localScale = boyut;
+        Instantiate(balloonPop, transform.position, Quaternion.identity);
     }
     #endregion
 }

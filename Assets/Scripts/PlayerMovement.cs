@@ -50,9 +50,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        SwerveControl();
+        if (!finish)
+        {
+            SwerveControl();
+        }
         
-
+       
         if (fly && !finish)
         {
             rb.AddForce(new Vector3(0, GetComponent<BalloonDestroyer>().seviye / 1.1f, 0));

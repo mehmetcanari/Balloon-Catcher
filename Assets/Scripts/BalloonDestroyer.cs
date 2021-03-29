@@ -7,7 +7,7 @@ public class BalloonDestroyer : MonoBehaviour
     public GameObject mainballoon;
     public float balonscale;
     public int seviye;
-    bool red = false;
+    bool blue = false;
     bool purple = true;
     bool green = false;
     public Material blueMat;
@@ -19,6 +19,7 @@ public class BalloonDestroyer : MonoBehaviour
     public ParticleSystem greenPuff;
     public ParticleSystem bluePuff;
     public ParticleSystem purplePuff;
+    public Traps tr;
     Vector3 numberSpawn;
     private void Start()
     {
@@ -30,19 +31,25 @@ public class BalloonDestroyer : MonoBehaviour
         {
             seviye = 0;
         }
+
+        if (seviye < 0)
+        {
+            seviye = 0; // Seviye eksiye düşemez
+        }
     }
 
 
     private void OnTriggerEnter(Collider collision)
     {
 
+        #region triggers
         if (collision.gameObject.tag == "Destroyer")
         {
             Destroy(gameObject);
         }
         if (collision.gameObject.tag == "blueTrigger")
         {
-            red = true;
+            blue = true;
             green = false;
             purple = false;
             mainballoon.GetComponent<MeshRenderer>().material = blueMat;
@@ -52,7 +59,7 @@ public class BalloonDestroyer : MonoBehaviour
         if (collision.gameObject.tag == "greenTrigger")
         {
             green = true;
-            red = false;
+            blue = false;
             purple = false;
             mainballoon.GetComponent<MeshRenderer>().material = greenMat;
             if (mainballoon.gameObject.activeSelf)
@@ -61,14 +68,15 @@ public class BalloonDestroyer : MonoBehaviour
         if (collision.gameObject.tag == "purpleTrigger")
         {
             green = false;
-            red = false;
+            blue = false;
             purple = true;
             mainballoon.GetComponent<MeshRenderer>().material = purpleMat;
             if (mainballoon.gameObject.activeSelf)
                 Instantiate(purplePuff, mainballoon.transform.position, Quaternion.identity);
         }
+        #endregion
 
-        #region balloons
+        #region Green Index
         if (green)
         {
             if (collision.gameObject.tag == "green")
@@ -117,7 +125,10 @@ public class BalloonDestroyer : MonoBehaviour
             }
 
         }
-        if (red)
+        #endregion
+
+        #region Blue Index
+        if (blue)
         {
             if (collision.gameObject.tag == "green")
             {
@@ -161,7 +172,15 @@ public class BalloonDestroyer : MonoBehaviour
                 mainballoon.SetActive(true);
 
             }
+            if (collision.gameObject.tag == "trap")
+            {
+                Debug.Log("TRAP");
+                tr.BalloonPop();
+            }
         }
+        #endregion
+
+        #region Purple Index
         if (purple)
         {
             if (collision.gameObject.tag == "green")
@@ -206,6 +225,12 @@ public class BalloonDestroyer : MonoBehaviour
                 Instantiate(particle, collision.gameObject.transform.position, Quaternion.identity);
                 Destroy(collision.gameObject);
 
+            }
+
+            if (collision.gameObject.tag == "trap")
+            {
+                Debug.Log("TRAP");
+                tr.BalloonPop();
             }
 
         }
