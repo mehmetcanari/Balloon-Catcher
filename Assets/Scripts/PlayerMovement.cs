@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
+    #region Variables
     [Header("Movement")]
     public Animator anim;
     public float moveSpeedZ = 10;
@@ -36,25 +37,26 @@ public class PlayerMovement : MonoBehaviour
     bool finish = false;
     bool start = false;
     public bool ragdollCheck = false;
-
+    #endregion
 
     private void Start()
     {
+        #region Start Parameters
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
         mainballoon = GetComponent<BalloonDestroyer>().mainballoon;
-
         DisableRagdoll();
+        #endregion
     }
 
     private void Update()
     {
+        #region Finish Arguments
         if (!finish)
         {
             SwerveControl();
         }
         
-       
         if (fly && !finish)
         {
             rb.AddForce(new Vector3(0, GetComponent<BalloonDestroyer>().seviye / 1.1f, 0));
@@ -63,6 +65,7 @@ public class PlayerMovement : MonoBehaviour
         {
             transform.Translate(Vector3.forward * moveSpeedZ * Time.deltaTime, Space.World);
         }
+        #endregion
     }
 
     #region Swerve

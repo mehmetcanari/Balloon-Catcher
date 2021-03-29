@@ -4,6 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 public class BalloonDestroyer : MonoBehaviour
 {
+    #region Variables
     public GameObject mainballoon;
     public float balonscale;
     public int seviye;
@@ -21,6 +22,7 @@ public class BalloonDestroyer : MonoBehaviour
     public ParticleSystem purplePuff;
     public Traps tr;
     Vector3 numberSpawn;
+    #endregion
 
     private void Update()
     {
