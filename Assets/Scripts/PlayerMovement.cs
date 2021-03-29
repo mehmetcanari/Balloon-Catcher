@@ -137,6 +137,12 @@ public class PlayerMovement : MonoBehaviour
                 mainballoon.GetComponent<Collider>().isTrigger = true;
             }
 
+            else if (mainballoon.gameObject.activeSelf == false)
+            {
+                Debug.Log("Elinde balon yok");
+                fly = true;
+            }
+
             anim.SetBool("Run", false);
             anim.SetBool("Fly", true);
         }

@@ -8,6 +8,7 @@ public class Traps : MonoBehaviour
     Vector3 boyut;
     private int pop;
     public ParticleSystem balloonPop;
+    public ParticleSystem sadEmoji;
 
     private void Start()
     {
@@ -64,6 +65,7 @@ public class Traps : MonoBehaviour
         gameObject.SetActive(false);
         transform.localScale = boyut;
         Instantiate(balloonPop, transform.position, Quaternion.identity);
+        Instantiate(sadEmoji, transform.position, Quaternion.identity);
     }
     #endregion
 }

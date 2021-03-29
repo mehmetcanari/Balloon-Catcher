@@ -2487,7 +2487,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 482253524}
-  m_LocalRotation: {x: 0.26601937, y: 0.00020380296, z: -0.000056242076, w: 0.9639677}
+  m_LocalRotation: {x: 0.26601934, y: 0.00020377425, z: -0.00005623415, w: 0.9639677}
   m_LocalPosition: {x: -10.54, y: 18.159996, z: -43.38001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -6085,7 +6085,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.26601937, y: 0.00020380296, z: -0.000056242076, w: 0.9639677}
+  m_LocalRotation: {x: 0.26601934, y: 0.00020377425, z: -0.00005623415, w: 0.9639677}
   m_LocalPosition: {x: 0.04555874, y: 1.7389503, z: -45.60336}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -11460,6 +11460,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   balloonPop: {fileID: 19806788, guid: c2f28a236b0696a4f90a994422019577, type: 3}
+  sadEmoji: {fileID: 19886030, guid: 22639b6f8f7b8c943bca8000475a5f8d, type: 3}
 --- !u!4 &1691617201 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8d38a47512c2cf349a30221a07196977,
