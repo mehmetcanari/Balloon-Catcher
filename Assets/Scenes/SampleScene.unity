@@ -8414,23 +8414,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 1223573669}
   moveSpeedZ: 10
-  xClamp: 0
   m_startPos: {x: 0, y: 0}
   m_deltaPos: {x: 0, y: 0}
   balloonPop: {fileID: 19806788, guid: c2f28a236b0696a4f90a994422019577, type: 3}
-  moveSmoother: 10
   mainballoon: {fileID: 1691617194}
   tapTo: {fileID: 724088061}
   nextButton: {fileID: 2037880535}
   retryButton: {fileID: 1152995932}
-  kat: 0
   ragDollCol: []
   ragdollRb: []
   playerCol: {fileID: 1223573667}
-  ragdollCheck: 0
   cmCam: {fileID: 482253526}
   ragdollTransform: {fileID: 5465940247256090933}
   bd: {fileID: 1223573670}
+  kat: 0
+  moveSmoother: 10
+  ragdollCheck: 0
 --- !u!4 &1232968947 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 271880171984548856, guid: 3a8bfcc1fd7666c479e4f05610cac921,
