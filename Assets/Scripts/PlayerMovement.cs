@@ -52,18 +52,24 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         #region Finish Arguments
-        if (!finish)
+        if (!fly)
         {
             SwerveControl();
         }
         
         if (fly && !finish)
         {
-            rb.AddForce(new Vector3(0, GetComponent<BalloonDestroyer>().seviye / 1.1f, 0));
+            rb.AddForce(new Vector3(0, GetComponent<BalloonDestroyer>().seviye, 0));
         }
         if (start && !finish)
         {
             transform.Translate(Vector3.forward * moveSpeedZ * Time.deltaTime, Space.World);
+        }
+
+
+        if (Input.GetKey(KeyCode.R))
+        {
+            SceneManager.LoadScene(0);
         }
         #endregion
     }
@@ -76,9 +82,10 @@ public class PlayerMovement : MonoBehaviour
             m_startPos = Input.mousePosition;
             anim.SetBool("Run", true);
             start = true;
+            
             if(tapTo != null)
             {
-                Destroy(tapTo);
+                tapTo.gameObject.transform.DOScale(new Vector3(0,0,tapTo.gameObject.transform.localScale.z),0.2f);
             }
         }
 
@@ -124,12 +131,18 @@ public class PlayerMovement : MonoBehaviour
             anim.SetBool("Fly", false);
             anim.SetBool("Bump", true);
             nextButton.SetActive(true);
+            nextButton.gameObject.transform.DOScale(new Vector3(1.3f, nextButton.transform.localScale.y, 1.3f), 0.2f);
         }
     }
     private void OnTriggerEnter(Collider collision)
     {
         if (collision.gameObject.tag == "fly")
         {
+            if (bd.seviye < 5)
+            {
+                bd.seviye = -5;
+            }
+
             if (mainballoon.gameObject.activeSelf)
             {
                 rb.useGravity = false;
@@ -155,6 +168,7 @@ public class PlayerMovement : MonoBehaviour
             cmCam.Follow = ragdollTransform;
             cmCam.LookAt = ragdollTransform;
             retryButton.SetActive(true);
+            retryButton.gameObject.transform.DOScale(new Vector3(1.3f, nextButton.transform.localScale.y, 1.3f), 0.2f);
             ActivateRagdoll();
         }
     }
@@ -183,6 +197,7 @@ public class PlayerMovement : MonoBehaviour
             playerCol.isTrigger = true;
             anim.enabled = false;
         }
+        
         if (finish)
         {
             enabled = false;

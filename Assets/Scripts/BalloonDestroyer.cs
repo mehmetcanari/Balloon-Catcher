@@ -31,11 +31,6 @@ public class BalloonDestroyer : MonoBehaviour
         {
             seviye = 0;
         }
-
-        if (seviye < 0)
-        {
-            seviye = 0; // Seviye eksiye düşemez
-        }
     }
 
 
@@ -213,12 +208,6 @@ public class BalloonDestroyer : MonoBehaviour
                 }
                 Instantiate(particle, collision.gameObject.transform.position, Quaternion.identity);
                 Destroy(collision.gameObject);
-            }
-
-            if (collision.gameObject.tag == "trap")
-            {
-                Debug.Log("TRAP");
-                tr.BalloonPop();
             }
         }
         #endregion
