@@ -57,21 +57,26 @@ public class PlayerMovement : MonoBehaviour
             SwerveControl();
         }
         
-        if (fly && !finish)
-        {
-            rb.AddForce(new Vector3(0, GetComponent<BalloonDestroyer>().seviye, 0));
-        }
         if (start && !finish)
         {
             transform.Translate(Vector3.forward * moveSpeedZ * Time.deltaTime, Space.World);
         }
 
+        //Debug.Log(bd.seviye);
 
         if (Input.GetKey(KeyCode.R))
         {
             SceneManager.LoadScene(0);
         }
         #endregion
+    }
+
+    private void FixedUpdate()
+    {
+        if (fly && !finish)
+        {
+            rb.AddForce(new Vector3(0, bd.seviye * 1.5f, 0), ForceMode.Force);
+        }
     }
 
     #region Swerve
@@ -82,11 +87,12 @@ public class PlayerMovement : MonoBehaviour
             m_startPos = Input.mousePosition;
             anim.SetBool("Run", true);
             start = true;
-            
-            if(tapTo != null)
+
+            if (start)
             {
-                tapTo.gameObject.transform.DOScale(new Vector3(0,0,tapTo.gameObject.transform.localScale.z),0.2f);
+                tapTo.gameObject.transform.DOScale(new Vector3(0, 0, tapTo.gameObject.transform.localScale.z), 0.2f);
             }
+
         }
 
         if (Input.GetMouseButton(0))
@@ -122,7 +128,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (collision.gameObject.tag == "finish")
         {
-            Debug.Log("finish");
+            //Debug.Log("finish");
 
             rb.isKinematic = true;
             rb.constraints = RigidbodyConstraints.FreezeAll;
@@ -131,7 +137,7 @@ public class PlayerMovement : MonoBehaviour
             anim.SetBool("Fly", false);
             anim.SetBool("Bump", true);
             nextButton.SetActive(true);
-            nextButton.gameObject.transform.DOScale(new Vector3(1.3f, nextButton.transform.localScale.y, 1.3f), 0.2f);
+            nextButton.gameObject.transform.DOScale(new Vector3(3.5f, nextButton.transform.localScale.y, nextButton.transform.localScale.z), 0.4f);
         }
     }
     private void OnTriggerEnter(Collider collision)
@@ -152,7 +158,7 @@ public class PlayerMovement : MonoBehaviour
 
             else if (mainballoon.gameObject.activeSelf == false)
             {
-                Debug.Log("Elinde balon yok");
+                //Debug.Log("Elinde balon yok");
                 fly = true;
             }
 
@@ -168,7 +174,7 @@ public class PlayerMovement : MonoBehaviour
             cmCam.Follow = ragdollTransform;
             cmCam.LookAt = ragdollTransform;
             retryButton.SetActive(true);
-            retryButton.gameObject.transform.DOScale(new Vector3(1.3f, nextButton.transform.localScale.y, 1.3f), 0.2f);
+            retryButton.gameObject.transform.DOScale(new Vector3(3.5f, retryButton.transform.localScale.y, retryButton.transform.localScale.z), 0.4f);
             ActivateRagdoll();
         }
     }
@@ -187,7 +193,7 @@ public class PlayerMovement : MonoBehaviour
     }
     public void ActivateRagdoll()
     {
-        Debug.Log("Ragdoll");
+        //Debug.Log("Ragdoll");
         for (var i = ragDollCol.Length - 1; i > 1; i--)
         {
             ragDollCol[i].enabled = true;

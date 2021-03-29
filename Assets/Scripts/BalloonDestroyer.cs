@@ -158,11 +158,6 @@ public class BalloonDestroyer : MonoBehaviour
                 Destroy(collision.gameObject);
                 mainballoon.SetActive(true);
             }
-            if (collision.gameObject.tag == "trap")
-            {
-                Debug.Log("TRAP");
-                tr.BalloonPop();
-            }
         }
         #endregion
 

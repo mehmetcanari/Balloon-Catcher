@@ -35,7 +35,7 @@ public class Traps : MonoBehaviour
     #region Triggers
     private void OnTriggerEnter(Collider collision)
     {
-            Debug.Log(collision.gameObject);
+        //Debug.Log(collision.gameObject);
         if (collision.gameObject.tag == "trap")
         {
             BalloonPop();
