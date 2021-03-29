@@ -8,6 +8,7 @@ public class Traps : MonoBehaviour
     Vector3 boyut;
     private int pop;
     public ParticleSystem balloonPop;
+    public ParticleSystem sadEmoji;
 
     private void Start()
     {
@@ -15,14 +16,15 @@ public class Traps : MonoBehaviour
     }
     private void Update()
     {
-        if (pop == 2)
+        if (pop == 2) 
         {
             Instantiate(balloonPop, transform.position, Quaternion.identity);
             transform.localScale = boyut;
             pop = 0;
             gameObject.SetActive(false);
         }
-        if (transform.localScale.x < 90)
+        
+        if (transform.localScale.x < 90) //90'dan küçükse balon patlayacak
         {
             transform.localScale = boyut;
             Instantiate(balloonPop, transform.position, Quaternion.identity);
@@ -33,10 +35,10 @@ public class Traps : MonoBehaviour
     #region Triggers
     private void OnTriggerEnter(Collider collision)
     {
-            Debug.Log(collision.gameObject);
+        //Debug.Log(collision.gameObject);
         if (collision.gameObject.tag == "trap")
         {
-            BaloonPop();
+            BalloonPop();
         }
         if (collision.gameObject.tag == "trapdetect")
         {
@@ -59,11 +61,12 @@ public class Traps : MonoBehaviour
         }
     }
 
-    public void BaloonPop()
+    public void BalloonPop()
     {
         gameObject.SetActive(false);
         transform.localScale = boyut;
         Instantiate(balloonPop, transform.position, Quaternion.identity);
+        Instantiate(sadEmoji, transform.position, Quaternion.identity);
     }
     #endregion
 }

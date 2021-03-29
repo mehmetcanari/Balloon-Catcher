@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class NumberMovement : MonoBehaviour
 {
+    public GameObject player;
     SpriteRenderer rend;
     void Start()
     {
+        player = GameObject.FindGameObjectWithTag("baloncu");
+        transform.parent = player.transform;
+
         rend = GetComponent<SpriteRenderer>();
         StartCoroutine("FadeOut");
     }
