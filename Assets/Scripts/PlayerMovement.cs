@@ -13,29 +13,29 @@ public class PlayerMovement : MonoBehaviour
     public float moveSpeedZ = 10;
     [Range(-7.5f, 7.5f)]
     [SerializeField]
-    private float xClamp = 0;
     public Vector2 m_startPos;
     public Vector2 m_deltaPos;
     public ParticleSystem balloonPop;
-    private float moveSpeedX = 10;
     [Range(10, 100)]
-    public float moveSmoother = 50;
     public GameObject mainballoon;
     public GameObject tapTo;
     public GameObject nextButton;
     public GameObject retryButton;
-    public int kat;
     public Collider[] ragDollCol;
+    private Rigidbody rb;
     public Rigidbody[] ragdollRb;
     public Collider playerCol;
-    public bool ragdollCheck = false;
     public CinemachineVirtualCamera cmCam;
     public Transform ragdollTransform;
     public BalloonDestroyer bd;
-    Rigidbody rb;
+    public int kat;
+    private float moveSpeedX = 10;
+    public float moveSmoother = 50;
+    private float xClamp = 0;
     bool fly;
     bool finish = false;
     bool start = false;
+    public bool ragdollCheck = false;
 
 
     private void Start()
@@ -43,7 +43,6 @@ public class PlayerMovement : MonoBehaviour
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
         mainballoon = GetComponent<BalloonDestroyer>().mainballoon;
-
 
         DisableRagdoll();
     }
@@ -66,6 +65,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    #region Swerve
     public void SwerveControl()
     {
         if (Input.GetMouseButtonDown(0))
@@ -81,7 +81,19 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetMouseButton(0))
         {
-            CallSwerve();
+            m_deltaPos = (Vector2)Input.mousePosition - m_startPos;
+            m_deltaPos.y = 0;
+            transform.position = new Vector3(Mathf.Lerp(transform.position.x, transform.position.x + (m_deltaPos.x / Screen.width) * moveSmoother, moveSpeedX), transform.position.y, transform.position.z);
+            m_startPos = Input.mousePosition;
+
+            if (m_deltaPos.x > 0)
+            {
+                transform.DOLocalRotate(new Vector3(0, 20, 0), 0.2f);
+            }
+            else if (m_deltaPos.x < 0)
+            {
+                transform.DOLocalRotate(new Vector3(0, -20, 0), 0.2f);
+            }
 
             xClamp = Mathf.Clamp(transform.position.x, -2f, 2f);
             transform.position = new Vector3(xClamp, transform.position.y, transform.position.z);
@@ -93,24 +105,9 @@ public class PlayerMovement : MonoBehaviour
             transform.DOLocalRotate(new Vector3(0, 0, 0), 0.2f);
         }
     }
+    #endregion
 
-    public void CallSwerve()
-    {
-        m_deltaPos = (Vector2)Input.mousePosition - m_startPos;
-        m_deltaPos.y = 0;
-        transform.position = new Vector3(Mathf.Lerp(transform.position.x, transform.position.x + (m_deltaPos.x / Screen.width) * moveSmoother, moveSpeedX), transform.position.y, transform.position.z);
-        m_startPos = Input.mousePosition;
-
-        if (m_deltaPos.x > 0)
-        {
-            transform.DOLocalRotate(new Vector3(0, 20, 0), 0.2f);
-        }
-        else if (m_deltaPos.x < 0)
-        {
-            transform.DOLocalRotate(new Vector3(0, -20, 0), 0.2f);
-        }
-
-    }
+    #region Colliders / Triggers
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "finish")
@@ -158,7 +155,9 @@ public class PlayerMovement : MonoBehaviour
             ActivateRagdoll();
         }
     }
+    #endregion
 
+    #region Methods
     public void DisableRagdoll()
     {
         ragdollRb = GetComponentsInChildren<Rigidbody>();
@@ -191,4 +190,5 @@ public class PlayerMovement : MonoBehaviour
     {
         SceneManager.LoadScene(0);
     }
+    #endregion 
 }

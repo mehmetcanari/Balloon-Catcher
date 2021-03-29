@@ -16,14 +16,15 @@ public class Traps : MonoBehaviour
     }
     private void Update()
     {
-        if (pop == 2)
+        if (pop == 2) 
         {
             Instantiate(balloonPop, transform.position, Quaternion.identity);
             transform.localScale = boyut;
             pop = 0;
             gameObject.SetActive(false);
         }
-        if (transform.localScale.x < 90)
+        
+        if (transform.localScale.x < 90) //90'dan küçükse balon patlayacak
         {
             transform.localScale = boyut;
             Instantiate(balloonPop, transform.position, Quaternion.identity);

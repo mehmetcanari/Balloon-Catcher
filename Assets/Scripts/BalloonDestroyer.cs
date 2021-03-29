@@ -21,9 +21,7 @@ public class BalloonDestroyer : MonoBehaviour
     public ParticleSystem purplePuff;
     public Traps tr;
     Vector3 numberSpawn;
-    private void Start()
-    {
-    }
+
     private void Update()
     {
         numberSpawn = new Vector3(transform.position.x + 1, transform.position.y + 2, transform.position.z);
@@ -41,12 +39,12 @@ public class BalloonDestroyer : MonoBehaviour
 
     private void OnTriggerEnter(Collider collision)
     {
-
         #region triggers
         if (collision.gameObject.tag == "Destroyer")
         {
             Destroy(gameObject);
         }
+
         if (collision.gameObject.tag == "blueTrigger")
         {
             blue = true;
@@ -54,8 +52,9 @@ public class BalloonDestroyer : MonoBehaviour
             purple = false;
             mainballoon.GetComponent<MeshRenderer>().material = blueMat;
             if (mainballoon.gameObject.activeSelf)
-                Instantiate(bluePuff, mainballoon.transform.position, Quaternion.identity);
+            Instantiate(bluePuff, mainballoon.transform.position, Quaternion.identity);
         }
+
         if (collision.gameObject.tag == "greenTrigger")
         {
             green = true;
@@ -63,7 +62,7 @@ public class BalloonDestroyer : MonoBehaviour
             purple = false;
             mainballoon.GetComponent<MeshRenderer>().material = greenMat;
             if (mainballoon.gameObject.activeSelf)
-                Instantiate(greenPuff, mainballoon.transform.position, Quaternion.identity);
+            Instantiate(greenPuff, mainballoon.transform.position, Quaternion.identity);
         }
         if (collision.gameObject.tag == "purpleTrigger")
         {
@@ -72,7 +71,7 @@ public class BalloonDestroyer : MonoBehaviour
             purple = true;
             mainballoon.GetComponent<MeshRenderer>().material = purpleMat;
             if (mainballoon.gameObject.activeSelf)
-                Instantiate(purplePuff, mainballoon.transform.position, Quaternion.identity);
+            Instantiate(purplePuff, mainballoon.transform.position, Quaternion.identity);
         }
         #endregion
 
@@ -91,14 +90,12 @@ public class BalloonDestroyer : MonoBehaviour
                 Instantiate(particle, collision.gameObject.transform.position, Quaternion.identity);
                 Destroy(collision.gameObject);
                 mainballoon.SetActive(true);
-
-
             }
+
             if (collision.gameObject.tag == "purple")
             {
                 if (mainballoon.gameObject.activeSelf)
                 {
-
                     seviye--;
                     mainballoon.transform.DOScale(new Vector3(mainballoon.transform.localScale.x - balonscale, mainballoon.transform.localScale.y - balonscale, mainballoon.transform.localScale.z - balonscale), 0.1f);
                     mainballoon.transform.position -= new Vector3(0, 0.05f, 0);
@@ -108,11 +105,11 @@ public class BalloonDestroyer : MonoBehaviour
                 Destroy(collision.gameObject);
 
             }
+
             if (collision.gameObject.tag == "blue")
             {
                 if (mainballoon.gameObject.activeSelf)
                 {
-
                     seviye--;
                     mainballoon.transform.DOScale(new Vector3(mainballoon.transform.localScale.x - balonscale, mainballoon.transform.localScale.y - balonscale, mainballoon.transform.localScale.z - balonscale), 0.1f);
                     mainballoon.transform.position -= new Vector3(0, 0.05f, 0);
@@ -120,10 +117,7 @@ public class BalloonDestroyer : MonoBehaviour
                 }
                 Instantiate(particle, collision.gameObject.transform.position, Quaternion.identity);
                 Destroy(collision.gameObject);
-
-
             }
-
         }
         #endregion
 
@@ -134,7 +128,6 @@ public class BalloonDestroyer : MonoBehaviour
             {
                 if (mainballoon.gameObject.activeSelf)
                 {
-
                     seviye--;
                     mainballoon.transform.DOScale(new Vector3(mainballoon.transform.localScale.x - balonscale, mainballoon.transform.localScale.y - balonscale, mainballoon.transform.localScale.z - balonscale), 0.1f);
                     mainballoon.transform.position -= new Vector3(0, 0.05f, 0);
@@ -142,14 +135,11 @@ public class BalloonDestroyer : MonoBehaviour
                 }
                 Instantiate(particle, collision.gameObject.transform.position, Quaternion.identity);
                 Destroy(collision.gameObject);
-
-
             }
             if (collision.gameObject.tag == "purple")
             {
                 if (mainballoon.gameObject.activeSelf)
                 {
-
                     seviye--;
                     mainballoon.transform.DOScale(new Vector3(mainballoon.transform.localScale.x - balonscale, mainballoon.transform.localScale.y - balonscale, mainballoon.transform.localScale.z - balonscale), 0.1f);
                     mainballoon.transform.position -= new Vector3(0, 0.05f, 0);
@@ -170,7 +160,6 @@ public class BalloonDestroyer : MonoBehaviour
                 Instantiate(particle, collision.gameObject.transform.position, Quaternion.identity);
                 Destroy(collision.gameObject);
                 mainballoon.SetActive(true);
-
             }
             if (collision.gameObject.tag == "trap")
             {
@@ -185,10 +174,8 @@ public class BalloonDestroyer : MonoBehaviour
         {
             if (collision.gameObject.tag == "green")
             {
-
                 if (mainballoon.gameObject.activeSelf)
                 {
-
                     seviye--;
                     mainballoon.transform.DOScale(new Vector3(mainballoon.transform.localScale.x - balonscale, mainballoon.transform.localScale.y - balonscale, mainballoon.transform.localScale.z - balonscale), 0.1f);
                     mainballoon.transform.position -= new Vector3(0, 0.05f, 0);
@@ -196,9 +183,8 @@ public class BalloonDestroyer : MonoBehaviour
                 }
                 Instantiate(particle, collision.gameObject.transform.position, Quaternion.identity);
                 Destroy(collision.gameObject);
-
-
             }
+
             if (collision.gameObject.tag == "purple")
             {
                 if (mainballoon.gameObject.activeSelf)
@@ -212,6 +198,7 @@ public class BalloonDestroyer : MonoBehaviour
                 Destroy(collision.gameObject);
                 mainballoon.SetActive(true);
             }
+
             if (collision.gameObject.tag == "blue")
             {
                 if (mainballoon.gameObject.activeSelf)
@@ -224,7 +211,6 @@ public class BalloonDestroyer : MonoBehaviour
                 }
                 Instantiate(particle, collision.gameObject.transform.position, Quaternion.identity);
                 Destroy(collision.gameObject);
-
             }
 
             if (collision.gameObject.tag == "trap")
@@ -232,7 +218,6 @@ public class BalloonDestroyer : MonoBehaviour
                 Debug.Log("TRAP");
                 tr.BalloonPop();
             }
-
         }
         #endregion
     }
