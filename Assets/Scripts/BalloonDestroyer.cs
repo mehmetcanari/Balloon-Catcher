@@ -6,6 +6,9 @@ public class BalloonDestroyer : MonoBehaviour
 {
     #region Variables
     public GameObject mainballoon;
+    public GameObject goodSign;
+    public GameObject perfectSign;
+    public GameObject amazingSign;
     public float balonscale;
     public int seviye;
     bool blue = false;
@@ -21,6 +24,15 @@ public class BalloonDestroyer : MonoBehaviour
     public ParticleSystem bluePuff;
     public ParticleSystem purplePuff;
     public Traps tr;
+    private bool isGooded = false;
+    private bool isPerfected = false;
+    private bool isAmazing = false;
+
+    [Header("Commend's Appear Levels")]
+    public int goodSeviye = 5;
+    public int perfectSeviye = 12;
+    public int amazingSeviye = 15;
+
     Vector3 numberSpawn;
     #endregion
 
@@ -30,6 +42,27 @@ public class BalloonDestroyer : MonoBehaviour
         if (!mainballoon.gameObject.activeSelf)
         {
             seviye = 0;
+        }
+
+        if (mainballoon.gameObject.activeSelf && seviye == goodSeviye && !isGooded)
+        {
+            goodSign.gameObject.transform.DOScale(new Vector3(4, 1, goodSign.transform.localScale.z), 0.5f).SetEase(Ease.OutQuart);
+            Invoke("GoodCallBack", 1);
+            isGooded = true;
+        }
+
+        else if (mainballoon.gameObject.activeSelf && seviye == perfectSeviye && !isPerfected)
+        {
+            perfectSign.gameObject.transform.DOScale(new Vector3(x: 4, y: 1, perfectSign.gameObject.transform.localScale.z), 0.5f).SetEase(Ease.OutQuart);
+            Invoke("PerfectCallBack", 1);
+            isPerfected = true;
+        }
+
+        else if (mainballoon.gameObject.activeSelf && seviye == amazingSeviye && !isAmazing)
+        {
+            amazingSign.gameObject.transform.DOScale(new Vector3(x: 4, y: 1, amazingSign.gameObject.transform.localScale.z), 0.5f).SetEase(Ease.OutQuart);
+            Invoke("AmazingCallBack", 1);
+            isAmazing = true;
         }
     }
 
@@ -206,5 +239,20 @@ public class BalloonDestroyer : MonoBehaviour
             }
         }
         #endregion
+    }
+
+    public void GoodCallBack()
+    {
+        goodSign.gameObject.transform.DOScale(new Vector3(0, 0, goodSign.gameObject.transform.localScale.z), 0.3f).SetEase(Ease.OutQuart);
+    }
+
+    public void PerfectCallBack()
+    {
+        perfectSign.gameObject.transform.DOScale(new Vector3(x: 0, y: 0, perfectSign.gameObject.transform.localScale.z), 0.3f).SetEase(Ease.OutQuart);
+    }
+
+    public void AmazingCallBack()
+    {
+        amazingSign.gameObject.transform.DOScale(new Vector3(x: 0, y: 0, amazingSign.gameObject.transform.localScale.z), 0.3f).SetEase(Ease.OutQuart);
     }
 }

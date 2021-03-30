@@ -5,6 +5,7 @@ using UnityEngine;
 using DG.Tweening;
 using Cinemachine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -29,10 +30,13 @@ public class PlayerMovement : MonoBehaviour
     public CinemachineVirtualCamera cmCam;
     public Transform ragdollTransform;
     public BalloonDestroyer bd;
+    public TextMeshProUGUI tmpro;
+    public GameObject scoreImage;
     public int kat;
     private float moveSpeedX = 10;
     public float moveSmoother = 50;
     private float xClamp = 0;
+    private float scoreCount = 0;
     bool fly;
     bool finish = false;
     bool start = false;
@@ -165,10 +169,12 @@ public class PlayerMovement : MonoBehaviour
             anim.SetBool("Run", false);
             anim.SetBool("Fly", true);
         }
+
         if (collision.gameObject.tag == "kat")
         {
             kat++;
         }
+        
         if (collision.gameObject.tag == "fail")
         {
             cmCam.Follow = ragdollTransform;
@@ -176,6 +182,15 @@ public class PlayerMovement : MonoBehaviour
             retryButton.SetActive(true);
             retryButton.gameObject.transform.DOScale(new Vector3(3.5f, retryButton.transform.localScale.y, retryButton.transform.localScale.z), 0.4f);
             ActivateRagdoll();
+        }
+
+        if (collision.gameObject.tag == "collectible")
+        {
+            scoreCount++;
+            //Debug.Log(scoreCount);
+            tmpro.text = "" + scoreCount;
+            ScoreScale();
+            ScoreImageScale();
         }
     }
     #endregion
@@ -213,6 +228,18 @@ public class PlayerMovement : MonoBehaviour
     public void Restart()
     {
         SceneManager.LoadScene(0);
+    }
+
+    public void ScoreScale()
+    {
+        tmpro.gameObject.transform.DOScale(new Vector3(x: 0.4f, y: 0.4f, z: 0.4f), 0.2f);
+        tmpro.gameObject.transform.DOScale(new Vector3(x: 0.2f, y: 0.2f, z: 0.2f), 0.4f);
+    }
+
+    public void ScoreImageScale()
+    {
+        scoreImage.gameObject.transform.DOScale(new Vector3(x: 10f, y: 10f, z: 10f), 0.2f);
+        scoreImage.gameObject.transform.DOScale(new Vector3(x: 5.5f, y: 5.5f, z: 5.5f), 0.4f);
     }
     #endregion 
 }
